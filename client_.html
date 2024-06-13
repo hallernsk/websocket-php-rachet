@@ -1,0 +1,30 @@
+<!-- client.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Chat</title>
+</head>
+
+<body>
+    <h3>WebSocket Chat</h3>
+    <p>(файл client.html проeкта websocket-gpt4) </p>
+    <!-- // Javascript на стороне клиента: -->
+    <script>
+        // Connect to the WebSocket server
+        var conn = new WebSocket('ws://localhost:8080');
+
+        conn.onopen = function (e) {
+            console.log("Client-side: Connection established!"); // сообщение на клиенте при удачном подключении к серверу
+
+            // Send a message
+            conn.send('Hello from websocket-gpt4 client!'); // клиент посылает сообщение серверу (который пересылает его другим клиентам)
+        };
+
+        conn.onmessage = function (e) {
+            console.log(e.data); // вывод сообщения от сервера в консоль клиента (браузера)
+        };
+    </script>
+</body>
+
+</html>

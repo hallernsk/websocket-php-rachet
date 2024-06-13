@@ -1,0 +1,44 @@
+<!-- client.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Chat</title>
+</head>
+
+<body>
+    <h3>WebSocket Chat</h3>
+    <p>(файл client.html проeкта websocket-gpt4) </p>
+    <form id="messageForm">
+        <input type="text" id="messageInput" placeholder="Введите сообщение">
+        <button type="submit">Отправить</button>
+    </form>
+    <div id="chatOutput"></div>
+
+    <script> // код Javascript на стороне клиента:
+        var conn = new WebSocket('ws://localhost:8080'); // новый объект WebSocket (подключение к WebSocket-серверу)
+
+        // Callback функция, которая выполняется при удачном ПОДКЛЮЧЕНИИ к WebSocket-серверу:
+        conn.onopen = function (e) {
+            console.log("Connection established!");      // сообщение (в консоли) на клиенте при удачном подключении к серверу
+        };
+
+        // Callback функция, которая выполняется при ПОЛУЧЕНИИ СООБЩЕНИЯ от WebSocket-сервера:
+        conn.onmessage = function (e) {
+            // console.log(e); // Вывод объекта e (событие onmessage) в консоль
+            var chatOutput = document.getElementById('chatOutput');  // получаем элемент DOM с id chatOutput
+            chatOutput.innerHTML += '<p>' + e.data + '</p>';         // добавляем полученное от сервера WebSocket сообщение в блок chatOutput
+        };
+
+        // Callback функция, которая выполняется при ОТПРАВКЕ СООБЩЕНИЯ на WebSocket-сервер при нажатии кнопки "Отправить":
+        document.getElementById('messageForm').addEventListener('submit', function (e) {
+            e.preventDefault();                                         // отменяем дефолтное поведение формы (отправку формы)
+            var messageInput = document.getElementById('messageInput'); // получаем элемент DOM с id messageInput
+            var message = messageInput.value;                           // получаем значение этого элемента (текст, введенный пользователем в поле ввода)
+            conn.send(message);                                         // Отправляем сообщение (текст) серверу через WebSocket
+            messageInput.value = '';                                    // Очищаем поле ввода после отправки
+        }); 
+    </script>
+</body>
+
+</html>
